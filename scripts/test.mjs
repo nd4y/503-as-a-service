@@ -6,6 +6,7 @@ assert.match(html,/<body data-api-origin="https:\/\/five-oh-three-as-a-service\.
 assert.match(html,/href="\.\/favicon\.svg"/);
 assert.doesNotMatch(html,/192\.168\.|private-key|hosting\.json|appgprj_/);
 assert.match(html,/fetch\(apiOrigin/);
+assert.doesNotMatch(html,/location\.origin\+'\/api\/s3\//);
 assert.match(html,/saas503_cookie_preferences/);
 new vm.Script(html.match(/<script>([\s\S]*?)<\/script>/)[1]);
 assert.equal((await readFile('docs/.nojekyll','utf8')),'');
