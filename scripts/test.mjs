@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+import vm from 'node:vm';
+const html=await readFile('docs/index.html','utf8');
+assert.match(html,/<body data-api-origin="https:\/\/five-oh-three-as-a-service\.nd4y\.icu">/);
+assert.match(html,/href="\.\/favicon\.svg"/);
+assert.doesNotMatch(html,/192\.168\.|private-key|hosting\.json|appgprj_/);
+assert.match(html,/fetch\(apiOrigin/);
+assert.doesNotMatch(html,/location\.origin\+'\/api\/s3\//);
+assert.match(html,/saas503_cookie_preferences/);
+new vm.Script(html.match(/<script>([\s\S]*?)<\/script>/)[1]);
+assert.equal((await readFile('docs/.nojekyll','utf8')),'');
+console.log('PASS: project-relative assets, explicit API origin, cookie preferences, JS syntax, no private deployment metadata');
